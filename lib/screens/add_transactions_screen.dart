@@ -228,7 +228,7 @@ class _AddTransactionsState extends State<AddTransactions> {
           .showSnackBar(SnackBar(content: Text("Choose a category")));
       return;
     }
-    if (_amountText.isEmpty) {
+    if (_amountText.isEmpty) {                 
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Enter the amount")));
       return;
