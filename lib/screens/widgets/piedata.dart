@@ -1,19 +1,21 @@
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/db_models/category_model.dart';
 import 'package:money_management/db_models/transaction_model.dart';
-  bool All = true;
-  bool Today = false;
-  bool Yesterday = false;
-  bool Custom = false;
-  bool Monthly = false;
-    String parseDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
-  }
+
+bool All = true;
+bool Today = false;
+bool Yesterday = false;
+bool Custom = false;
+bool Monthly = false;
+String parseDate(DateTime date) {
+  return '${date.day}/${date.month}/${date.year}';
+}
+
 ValueNotifier<double> income = ValueNotifier(0);
 ValueNotifier<double> expense = ValueNotifier(0);
+ValueNotifier incomemapp = ValueNotifier({});
 total() async {
   final _db = await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
   // Box<TransactionModel> _db = Hive.box<TransactionModel>(TRANSACTION_DB_NAME);
@@ -44,7 +46,6 @@ total() async {
   expense.value = expenseamounts;
   expense.notifyListeners();
 }
-
 /*piechart*/
 
 Map<String, double> incallMap = {};
@@ -74,6 +75,67 @@ incomepiedata() async {
     expensecategories.add(expensecatgry!.category.name);
     expensecategories.add(expensecatgry.amount);
   }
+  incomemapp.notifyListeners();
+}
+
+incomepiedatabydate({dat}) async {
+  final _db = await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
+  incomecategories.clear();
+  expensecategories.clear();
+  List<int> incomecategorykey = _db.keys
+      .cast<int>()
+      .where((Key) =>
+          _db.get(Key)!.type == CategoryType.income &&
+          _db.get(Key)!.date.day == dat)
+      .toList();
+  print(DateTime.now());
+  print(incomecategorykey);
+  for (int i = 0; i < incomecategorykey.length; i++) {
+    final TransactionModel? incomecatgry = _db.get(incomecategorykey[i]);
+    incomecategories.add(incomecatgry!.category.name);
+    incomecategories.add(incomecatgry.amount);
+  }
+  List<int> expensecategorykey = _db.keys
+      .cast<int>()
+      .where((Key) =>
+          _db.get(Key)!.type == CategoryType.expense &&
+          _db.get(Key)!.date.day == dat)
+      .toList();
+  for (int i = 0; i < expensecategorykey.length; i++) {
+    final TransactionModel? expensecatgry = _db.get(expensecategorykey[i]);
+    expensecategories.add(expensecatgry!.category.name);
+    expensecategories.add(expensecatgry.amount);
+  }
+}
+
+incomepiedatabyMonth({monthly}) async {
+  final _db = await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
+  incomecategories.clear();
+  expensecategories.clear();
+  List<int> incomecategorykey = _db.keys
+      .cast<int>()
+      .where((Key) =>
+          _db.get(Key)!.type == CategoryType.income &&
+          _db.get(Key)!.date.month == monthly)
+      .toList();
+  print(DateTime.now());
+  print(incomecategorykey);
+  for (int i = 0; i < incomecategorykey.length; i++) {
+    final TransactionModel? incomecatgry = _db.get(incomecategorykey[i]);
+    incomecategories.add(incomecatgry!.category.name);
+    incomecategories.add(incomecatgry.amount);
+  }
+  List<int> expensecategorykey = _db.keys
+      .cast<int>()
+      .where((Key) =>
+          _db.get(Key)!.type == CategoryType.expense &&
+          _db.get(Key)!.date.month == monthly)
+      .toList();
+  for (int i = 0; i < expensecategorykey.length; i++) {
+    final TransactionModel? expensecatgry = _db.get(expensecategorykey[i]);
+    expensecategories.add(expensecatgry!.category.name);
+    expensecategories.add(expensecatgry.amount);
+  }
 }
 
 List incomecatname = [];
@@ -92,6 +154,7 @@ inc() {
       incomeamt.add(incomecategories[i]);
     }
   }
+
   for (int i = 0; i < expensecategories.length; i++) {
     if (i % 2 == 0 || i == 0) {
       expensecatname.add(expensecategories[i]);
@@ -116,7 +179,9 @@ piemap() {
     incomeamt.removeWhere((item) => item == 0.0);
     incomecatname.removeWhere((item) => item == "");
     incallMap.addAll({incomecatname[i]: incomeamt[i]});
+    incomemapp.notifyListeners();
   }
+
   for (int i = 0; i < expensecatname.length; i++) {
     for (var j = i + 1; j < expenseamt.length; j++) {
       if (expensecatname[i] == expensecatname[j]) {
@@ -128,5 +193,6 @@ piemap() {
     expenseamt.removeWhere((item) => item == 0.0);
     expensecatname.removeWhere((item) => item == "");
     expallMap.addAll({expensecatname[i]: expenseamt[i]});
+    incomemapp.notifyListeners();
   }
 }

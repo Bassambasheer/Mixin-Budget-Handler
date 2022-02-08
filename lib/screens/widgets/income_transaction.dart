@@ -26,17 +26,15 @@ class IncomeTransactions extends StatelessWidget {
     }
     return Column(
       children: [
-        Container(
-          child: Center(
-            child: PieChart(
-              dataMap: datamap,
-              chartRadius: MediaQuery.of(context).size.width / 2.3,
-              legendOptions: const LegendOptions(
-                legendPosition: LegendPosition.right,
-              ),
-              chartValuesOptions:
-                  const ChartValuesOptions(showChartValuesInPercentage: false),
+        Expanded(
+          child: PieChart(
+            dataMap: datamap,
+            chartRadius: MediaQuery.of(context).size.width / 2.3,
+            legendOptions: const LegendOptions(
+              legendPosition: LegendPosition.right,
             ),
+            chartValuesOptions:
+                const ChartValuesOptions(showChartValuesInPercentage: false),
           ),
         ),
         const Divider(),

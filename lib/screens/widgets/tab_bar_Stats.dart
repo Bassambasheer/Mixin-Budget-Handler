@@ -41,20 +41,17 @@ class _TabBarStatsState extends State<TabBarStats>
             ]),
         Expanded(
           child: TabBarView(controller: _tabController, children: [
-
             IncomeTransactions(),
             ExpenseTransactions(),
-                        Container(
-              child: Center(
-                child: PieChart(
-                  dataMap: datamap,
-                  chartRadius: MediaQuery.of(context).size.width / 2.0,
-                  legendOptions: const LegendOptions(
-                    legendPosition: LegendPosition.right,
-                  ),
-                  chartValuesOptions: const ChartValuesOptions(
-                      showChartValuesInPercentage: true),
+            Center(
+              child: PieChart(
+                dataMap: datamap,
+                chartRadius: MediaQuery.of(context).size.width / 2.0,
+                legendOptions: const LegendOptions(
+                  legendPosition: LegendPosition.right,
                 ),
+                chartValuesOptions:
+                    const ChartValuesOptions(showChartValuesInPercentage: true),
               ),
             ),
           ]),

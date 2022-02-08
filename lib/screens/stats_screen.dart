@@ -16,9 +16,11 @@ class StatsScreen extends StatefulWidget {
 class _StatsScreenState extends State<StatsScreen> {
   @override
   void initState() {
-    incomepiedata();
+incomepiedata();
     inc();
     piemap();
+    incomepiedatabydate(dat:DateTime.now().day);
+    incomepiedatabyMonth();
   }
 
   final _list = ['All', 'Today', 'Yesterday', 'Custom', 'Monthly'];
@@ -72,6 +74,8 @@ class _StatsScreenState extends State<StatsScreen> {
       range = newdateRange;
       startDate = range!.start;
       endDate = range!.end;
+      TransactionDB.instance
+          .refreshCustomTransactions(startdate: startDate, enddate: endDate);
     });
   }
 
@@ -119,30 +123,66 @@ class _StatsScreenState extends State<StatsScreen> {
   @override
   Widget build(BuildContext context) {
     int? eachmonth;
-    if (formattedMonth == "January") {eachmonth = 1;}
-    if (formattedMonth == "February") {eachmonth = 2;}
-    if (formattedMonth == "March") {eachmonth = 3;}
-    if (formattedMonth == "April") {eachmonth = 4;}
-    if (formattedMonth == "May") {eachmonth = 5;}
-    if (formattedMonth == "June") {eachmonth = 6;}
-    if (formattedMonth == "July") {eachmonth = 7;}
-    if (formattedMonth == "August") {eachmonth = 8;}
-    if (formattedMonth == "September") {eachmonth = 9;}
-    if (formattedMonth == "October") {eachmonth = 10;}
-    if (formattedMonth == "November") {eachmonth = 11;}
-    if (formattedMonth == "December") {eachmonth = 12;}
+    if (formattedMonth == "January") {
+      eachmonth = 1;
+    }
+    if (formattedMonth == "February") {
+      eachmonth = 2;
+    }
+    if (formattedMonth == "March") {
+      eachmonth = 3;
+    }
+    if (formattedMonth == "April") {
+      eachmonth = 4;
+    }
+    if (formattedMonth == "May") {
+      eachmonth = 5;
+    }
+    if (formattedMonth == "June") {
+      eachmonth = 6;
+    }
+    if (formattedMonth == "July") {
+      eachmonth = 7;
+    }
+    if (formattedMonth == "August") {
+      eachmonth = 8;
+    }
+    if (formattedMonth == "September") {
+      eachmonth = 9;
+    }
+    if (formattedMonth == "October") {
+      eachmonth = 10;
+    }
+    if (formattedMonth == "November") {
+      eachmonth = 11;
+    }
+    if (formattedMonth == "December") {
+      eachmonth = 12;
+    }
 
     if (All == true) {
+   incomepiedata();
+    inc();
+    piemap();
       TransactionDB.instance.refreshAllTransactions();
     } else if (Today == true) {
+      incomepiedatabydate(dat:DateTime.now().day);
+      inc();
+    piemap();
       TransactionDB.instance.refreshTransactions(dat: parseDate(_dateToday));
     } else if (Yesterday == true) {
+       incomepiedatabydate(dat:_dateYesterday.day);
+      inc();
+    piemap();
       TransactionDB.instance
           .refreshTransactions(dat: parseDate(_dateYesterday));
     } else if (Monthly == true) {
+      incomepiedatabyMonth(monthly:eachmonth);
+      inc();
+    piemap();
       TransactionDB.instance.refreshMonthlyTransactions(monthly: eachmonth);
-      print(formattedMonth);
     }
+  
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -200,7 +240,9 @@ class _StatsScreenState extends State<StatsScreen> {
                 child: Text(e),
               );
             }).toList(),
-            onChanged: (value) {},
+            onChanged: (value) {
+              
+            },
           ),
         ),
         Padding(
