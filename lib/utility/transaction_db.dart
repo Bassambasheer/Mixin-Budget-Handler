@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:money_management/db_models/category_model.dart';
 import 'package:money_management/db_models/transaction_model.dart';
-import 'package:money_management/screens/widgets/income_categorylists.dart';
+import 'package:money_management/screens/widgets/piedata.dart';
 
 const TRANSACTION_DB_NAME = 'transaction_db';
 
@@ -32,8 +32,63 @@ class TransactionDB implements TransactionDbFunctions {
     obj.key = _key;
     await _db.put(obj.key, obj);
   }
+  Future<void> refreshTransactions({dat}) async {
+    final _allTransactions = await getAllTransactions();
+    _allTransactions.sort((first, second) => second.date.compareTo(first.date));
+    incomeTransactionListNotifier.value.clear();
+    expenseTransactionListNotifier.value.clear();
+    await Future.forEach(
+      _allTransactions,
+      (TransactionModel category) {
+        if (category.type == CategoryType.income && parseDate(category.date) == dat) {
+          incomeTransactionListNotifier.value.add(category);
+        } else  if (category.type == CategoryType.expense && parseDate(category.date) == dat) {
+          expenseTransactionListNotifier.value.add(category);
+        }
+      },
+    );
+    incomeTransactionListNotifier.notifyListeners();
+    expenseTransactionListNotifier.notifyListeners();
+  }
 
-  Future<void> refreshTransactions() async {
+   Future<void> refreshMonthlyTransactions({monthly}) async {
+    final _allTransactions = await getAllTransactions();
+    _allTransactions.sort((first, second) => second.date.compareTo(first.date));
+    incomeTransactionListNotifier.value.clear();
+    expenseTransactionListNotifier.value.clear();
+    await Future.forEach(
+      _allTransactions,
+      (TransactionModel category) {
+        if (category.type == CategoryType.income && category.date.month == monthly) {
+          incomeTransactionListNotifier.value.add(category);
+        } else  if (category.type == CategoryType.expense && category.date.month == monthly) {
+          expenseTransactionListNotifier.value.add(category);
+        }
+      },
+    );
+    incomeTransactionListNotifier.notifyListeners();
+    expenseTransactionListNotifier.notifyListeners();
+  }
+
+  // Future<void> refreshCustomTransactions({monthly}) async {
+  //   final _allTransactions = await getAllTransactions();
+  //   _allTransactions.sort((first, second) => second.date.compareTo(first.date));
+  //   incomeTransactionListNotifier.value.clear();
+  //   expenseTransactionListNotifier.value.clear();
+  //   await Future.forEach(
+  //     _allTransactions,
+  //     (TransactionModel category) {
+  //       if (category.type == CategoryType.income && category.date.month == monthly) {
+  //         incomeTransactionListNotifier.value.add(category);
+  //       } else  if (category.type == CategoryType.expense && category.date.month == monthly) {
+  //         expenseTransactionListNotifier.value.add(category);
+  //       }
+  //     },
+  //   );
+  //   incomeTransactionListNotifier.notifyListeners();
+  //   expenseTransactionListNotifier.notifyListeners();
+  // }
+   Future<void> refreshAllTransactions() async {
     final _allTransactions = await getAllTransactions();
     _allTransactions.sort((first, second) => second.date.compareTo(first.date));
     incomeTransactionListNotifier.value.clear();
@@ -42,7 +97,7 @@ class TransactionDB implements TransactionDbFunctions {
       _allTransactions,
       (TransactionModel category) {
         if (category.type == CategoryType.income) {
-          incomeTransactionListNotifier.value.add(category);
+            incomeTransactionListNotifier.value.add(category);
         } else {
           expenseTransactionListNotifier.value.add(category);
         }
@@ -51,6 +106,7 @@ class TransactionDB implements TransactionDbFunctions {
     incomeTransactionListNotifier.notifyListeners();
     expenseTransactionListNotifier.notifyListeners();
   }
+  
 
   Future<void> refresh() async {
     final _list = await getAllTransactions();

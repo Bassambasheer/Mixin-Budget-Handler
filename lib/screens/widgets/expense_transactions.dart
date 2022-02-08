@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_management/screens/widgets/home_widgets.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/db_models/transaction_model.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:money_management/screens/widgets/piedata.dart';
 
 class ExpenseTransactions extends StatelessWidget {
   const ExpenseTransactions({Key? key}) : super(key: key);
@@ -19,6 +19,7 @@ class ExpenseTransactions extends StatelessWidget {
         Container(
           child: Center(
             child: PieChart(
+              
               dataMap: datamap,
               chartRadius: MediaQuery.of(context).size.width / 2.3,
               legendOptions: const LegendOptions(

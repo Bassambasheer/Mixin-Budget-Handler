@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_management/screens/widgets/expense_transactions.dart';
-import 'package:money_management/screens/widgets/home_widgets.dart';
 import 'package:money_management/screens/widgets/income_transaction.dart';
+import 'package:money_management/screens/widgets/piedata.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class TabBarStats extends StatefulWidget {
@@ -26,7 +26,6 @@ class _TabBarStatsState extends State<TabBarStats>
       "Income": income.value,
       "Expense": expense.value,
     };
-  
     return Column(
       children: [
         TabBar(
@@ -34,15 +33,18 @@ class _TabBarStatsState extends State<TabBarStats>
             unselectedLabelColor: Colors.grey,
             controller: _tabController,
             tabs: const [
-              Tab(text: "Overall"),
               Tab(text: "INCOME"),
+              Tab(text: "EXPENSE"),
               Tab(
-                text: "EXPENSE",
+                text: "OVERALL",
               )
             ]),
         Expanded(
           child: TabBarView(controller: _tabController, children: [
-            Container(
+
+            IncomeTransactions(),
+            ExpenseTransactions(),
+                        Container(
               child: Center(
                 child: PieChart(
                   dataMap: datamap,
@@ -55,8 +57,6 @@ class _TabBarStatsState extends State<TabBarStats>
                 ),
               ),
             ),
-            IncomeTransactions(),
-            ExpenseTransactions(),
           ]),
         )
       ],

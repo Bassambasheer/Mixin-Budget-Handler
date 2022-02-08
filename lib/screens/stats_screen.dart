@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_management/screens/widgets/income_categorylists.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/screens/widgets/home_widgets.dart';
 import 'package:money_management/screens/widgets/tab_bar_Stats.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:money_management/screens/widgets/piedata.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({Key? key}) : super(key: key);
@@ -23,11 +22,6 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   final _list = ['All', 'Today', 'Yesterday', 'Custom', 'Monthly'];
-  bool All = true;
-  bool Today = false;
-  bool Yesterday = false;
-  bool Custom = false;
-  bool Monthly = false;
 
 /*.........Date Pickers........*/
   static DateTime date = DateTime.now();
@@ -119,9 +113,36 @@ class _StatsScreenState extends State<StatsScreen> {
     }
   }
 
+  final _dateToday = DateTime.now();
+  final _dateYesterday = DateTime.now().subtract(Duration(days: 1));
+  late final _dateYear = DateFormat('yyyy').format(DateTime.now());
   @override
   Widget build(BuildContext context) {
-    TransactionDB.instance.refreshTransactions();
+    int? eachmonth;
+    if (formattedMonth == "January") {eachmonth = 1;}
+    if (formattedMonth == "February") {eachmonth = 2;}
+    if (formattedMonth == "March") {eachmonth = 3;}
+    if (formattedMonth == "April") {eachmonth = 4;}
+    if (formattedMonth == "May") {eachmonth = 5;}
+    if (formattedMonth == "June") {eachmonth = 6;}
+    if (formattedMonth == "July") {eachmonth = 7;}
+    if (formattedMonth == "August") {eachmonth = 8;}
+    if (formattedMonth == "September") {eachmonth = 9;}
+    if (formattedMonth == "October") {eachmonth = 10;}
+    if (formattedMonth == "November") {eachmonth = 11;}
+    if (formattedMonth == "December") {eachmonth = 12;}
+
+    if (All == true) {
+      TransactionDB.instance.refreshAllTransactions();
+    } else if (Today == true) {
+      TransactionDB.instance.refreshTransactions(dat: parseDate(_dateToday));
+    } else if (Yesterday == true) {
+      TransactionDB.instance
+          .refreshTransactions(dat: parseDate(_dateYesterday));
+    } else if (Monthly == true) {
+      TransactionDB.instance.refreshMonthlyTransactions(monthly: eachmonth);
+      print(formattedMonth);
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

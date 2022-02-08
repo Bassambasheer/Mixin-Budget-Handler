@@ -7,6 +7,7 @@ import 'package:money_management/screens/widgets/home_widgets.dart';
 import 'package:money_management/screens/widgets/notification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
+import 'package:money_management/screens/widgets/piedata.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);

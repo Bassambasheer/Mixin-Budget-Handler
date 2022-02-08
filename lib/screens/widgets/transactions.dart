@@ -4,7 +4,7 @@ import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/db_models/category_model.dart';
 import 'package:money_management/db_models/transaction_model.dart';
 import 'package:money_management/screens/widgets/delete_popup.dart';
-import 'package:money_management/screens/widgets/home_widgets.dart';
+import 'package:money_management/screens/widgets/piedata.dart';
 
 class Transactions extends StatelessWidget {
   const Transactions({Key? key}) : super(key: key);

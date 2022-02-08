@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
-import 'package:money_management/db_models/category_model.dart';
-import 'package:money_management/screens/widgets/home_widgets.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/db_models/transaction_model.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:money_management/screens/widgets/piedata.dart';
 
 class IncomeTransactions extends StatelessWidget {
   const IncomeTransactions({Key? key}) : super(key: key);
@@ -70,8 +68,8 @@ class IncomeTransactions extends StatelessWidget {
                             "\u20B9 ${_value.amount}",
                             style: const TextStyle(color: Colors.green),
                           ),
-                          subtitle:
-                              Text("${_value.category.name.toUpperCase()}\n${_value.note}"),
+                          subtitle: Text(
+                              "${_value.category.name.toUpperCase()}\n${_value.note}"),
                         ),
                       );
                     },
