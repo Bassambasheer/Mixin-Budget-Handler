@@ -24,6 +24,7 @@ class _AddTransactionsState extends State<AddTransactions> {
   @override
   void initState() {
     _selectedCategorytype = CategoryType.income;
+    _selectedDate = DateTime.now();
     super.initState();
   }
 
@@ -229,7 +230,7 @@ class _AddTransactionsState extends State<AddTransactions> {
           .showSnackBar(SnackBar(content: Text("Choose a category")));
       return;
     }
-    if (_amountText.isEmpty) {                 
+    if (_amountText.isEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Enter the amount")));
       return;
@@ -253,9 +254,6 @@ class _AddTransactionsState extends State<AddTransactions> {
     await TransactionDB.instance.addTransaction(_model);
     await total();
     await incomepiedata();
-
-    inc();
-    piemap();
     Navigator.of(context).pop();
     TransactionDB.instance.refresh();
   }

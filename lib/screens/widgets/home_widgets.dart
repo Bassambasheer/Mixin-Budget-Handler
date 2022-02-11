@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:money_management/utility/transaction_db.dart';
-import 'package:money_management/db_models/category_model.dart';
-import 'package:money_management/db_models/transaction_model.dart';
-
-Widget card({category, amount, boxcolor, borderclr}) {
+import 'package:intl/intl.dart';
+import 'package:money_management/screens/widgets/piedata.dart';
+DateTime month = DateTime.now();
+String formattedMonth = DateFormat('MMMM').format(month);
+ int? eachmonth;
+Widget card({category, amount, boxcolor, borderclr,context}) {
   return Container(
     decoration: BoxDecoration(
       color: boxcolor,
@@ -19,8 +19,8 @@ Widget card({category, amount, boxcolor, borderclr}) {
       ],
     ),
     margin: const EdgeInsets.all(15),
-    height: 100,
-    width: 165,
+    height: MediaQuery.of(context).size.height/ 8,
+     width: MediaQuery.of(context).size.width / 2.5,
     child: Padding(
       padding: const EdgeInsets.all(9.0),
       child: Center(
@@ -107,6 +107,67 @@ Widget new_text({required String txt1, required String txt2}) {
     ),
   );
 }
-monthstoint(){
-  
+ 
+monthfunction(){
+    if (formattedMonth == "January") {
+      eachmonth = 1;
+    }
+    if (formattedMonth == "February") {
+      eachmonth = 2;
+    }
+    if (formattedMonth == "March") {
+      eachmonth = 3;
+    }
+    if (formattedMonth == "April") {
+      eachmonth = 4;
+    }
+    if (formattedMonth == "May") {
+      eachmonth = 5;
+    }
+    if (formattedMonth == "June") {
+      eachmonth = 6;
+    }
+    if (formattedMonth == "July") {
+      eachmonth = 7;
+    }
+    if (formattedMonth == "August") {
+      eachmonth = 8;
+    }
+    if (formattedMonth == "September") {
+      eachmonth = 9;
+    }
+    if (formattedMonth == "October") {
+      eachmonth = 10;
+    }
+    if (formattedMonth == "November") {
+      eachmonth = 11;
+    }
+    if (formattedMonth == "December") {
+      eachmonth = 12;
+    }
+}
+
+reload() {
+  var _dateToday = DateTime.now();
+  var _dateYesterday = DateTime.now().subtract(Duration(days: 1));
+  if (All == true) {
+    incomepiedata();
+  } else if (Today == true) {
+    incomepiedatabydate(dat: _dateToday.day);
+  } else if (Yesterday == true) {
+    incomepiedatabydate(dat: _dateYesterday.day);
+  }
+}
+
+reloadtotal() async {
+  var _dateToday = DateTime.now();
+  var _dateYesterday = DateTime.now().subtract(Duration(days: 1));
+  if (All == true) {
+    await total();
+  } else if (Today == true) {
+    await totalbydate(date: _dateToday.day);
+  } else if (Yesterday == true) {
+    await totalbydate(date: _dateYesterday.day);
+  }
+
 }

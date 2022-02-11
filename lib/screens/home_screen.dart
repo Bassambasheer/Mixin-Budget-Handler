@@ -13,9 +13,6 @@ class HomeScreen extends StatelessWidget {
     TransactionDB.instance.refresh();
     CategoryDB.instance.refreshUI();
     total();
-       incomepiedata();
-    inc();
-    piemap();
     return Column(
       children: [
         const SizedBox(height: 20),
@@ -25,21 +22,25 @@ class HomeScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ValueListenableBuilder(
               valueListenable: income,
               builder: (context, double value, child) {
                 return card(
+                  context: context,
                     category: "Total Earned",
                     amount: ("\u20B9${income.value}"),
                     boxcolor: Colors.greenAccent.shade400.withOpacity(0.9),
                     borderclr: Colors.greenAccent.shade700.withOpacity(0.5));
+                    
               },
             ),
             ValueListenableBuilder(
               valueListenable: expense,
               builder: (context, double value, child) {
                 return card(
+                   context: context,
                     category: "Total Spent",
                     amount: ("\u20B9${expense.value}"),
                     boxcolor: Colors.redAccent.shade200.withOpacity(0.9),

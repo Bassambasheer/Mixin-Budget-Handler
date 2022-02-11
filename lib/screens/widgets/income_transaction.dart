@@ -1,34 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_management/screens/widgets/home_widgets.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/db_models/transaction_model.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:money_management/screens/widgets/piedata.dart';
 
-class IncomeTransactions extends StatelessWidget {
+class IncomeTransactions extends StatefulWidget {
   const IncomeTransactions({Key? key}) : super(key: key);
 
   @override
+  State<IncomeTransactions> createState() => _IncomeTransactionsState();
+}
+
+class _IncomeTransactionsState extends State<IncomeTransactions> {
+  @override
   Widget build(BuildContext context) {
-    // TransactionModel? incomecategories;
-    // incomecategorylist() async {
-    //   final _db = await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
-    //   List<int> incomecategorykey = _db.keys
-    //       .cast<int>()
-    //       .where((Key) => _db.get(Key)!.type == CategoryType.income)
-    //       .toList();
-    //   final TransactionModel? incomeTransaction = _db.get(incomecategorykey);
-    //   incomecategories = incomeTransaction;
-    // }
-    Map<String, double> datamap = incallMap;
-    if (datamap.isEmpty) {
+    reload();
+    // Map<String, double> datamap = incallMap;
+    if (incallMap.isEmpty) {
       return SizedBox();
     }
     return Column(
       children: [
         Expanded(
           child: PieChart(
-            dataMap: datamap,
+            dataMap: incallMap,
             chartRadius: MediaQuery.of(context).size.width / 2.3,
             legendOptions: const LegendOptions(
               legendPosition: LegendPosition.right,

@@ -44,9 +44,7 @@ class Transactions extends StatelessWidget {
                         TransactionDB.instance.deleteTransaction(_value.key!);
                         total();
                        incomepiedata();
-                       
-                       inc();
-    piemap();
+                     
                         Navigator.of(context).pop();
                       },
                       onpresscancel: () {

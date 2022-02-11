@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_management/screens/widgets/home_widgets.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/db_models/transaction_model.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -10,15 +11,16 @@ class ExpenseTransactions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, double> datamap = expallMap;
-    if (datamap.isEmpty) {
+    reload();
+    // Map<String, double> datamap = expallMap;
+    if (expallMap.isEmpty) {
       return SizedBox();
     }
     return Column(
       children: [
         Expanded(
           child: PieChart(
-            dataMap: datamap,
+            dataMap: expallMap,
             chartRadius: MediaQuery.of(context).size.width / 2.3,
             legendOptions: const LegendOptions(
               legendPosition: LegendPosition.right,
@@ -56,8 +58,8 @@ class ExpenseTransactions extends StatelessWidget {
                             "\u20B9 ${_value.amount}",
                             style: const TextStyle(color: Colors.red),
                           ),
-                          subtitle:
-                              Text("${_value.category.name.toUpperCase()}\n${_value.note}"),
+                          subtitle: Text(
+                              "${_value.category.name.toUpperCase()}\n${_value.note}"),
                         ),
                       );
                     },

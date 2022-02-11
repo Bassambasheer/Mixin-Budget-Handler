@@ -45,7 +45,7 @@ class TransactionDB implements TransactionDbFunctions {
             parseDate(category.date) == dat) {
           incomeTransactionListNotifier.value.add(category);
         } else if (category.type == CategoryType.expense &&
-            parseDate(category.date) == dat) {
+           parseDate(category.date) == dat) {
           expenseTransactionListNotifier.value.add(category);
         }
       },
@@ -62,7 +62,6 @@ class TransactionDB implements TransactionDbFunctions {
     await Future.forEach(
       _allTransactions,
       (TransactionModel category) {
-        print(category);
         if (category.type == CategoryType.income &&
             category.date.month == monthly) {
           incomeTransactionListNotifier.value.add(category);

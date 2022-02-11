@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_management/screens/widgets/expense_transactions.dart';
+import 'package:money_management/screens/widgets/income_transaction.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/screens/widgets/home_widgets.dart';
-import 'package:money_management/screens/widgets/tab_bar_Stats.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:money_management/screens/widgets/piedata.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({Key? key}) : super(key: key);
@@ -13,16 +15,8 @@ class StatsScreen extends StatefulWidget {
   State<StatsScreen> createState() => _StatsScreenState();
 }
 
-class _StatsScreenState extends State<StatsScreen> {
-  @override
-  void initState() {
-incomepiedata();
-    inc();
-    piemap();
-    incomepiedatabydate(dat:DateTime.now().day);
-    incomepiedatabyMonth();
-  }
-
+class _StatsScreenState extends State<StatsScreen>
+    with SingleTickerProviderStateMixin {
   final _list = ['All', 'Today', 'Yesterday', 'Custom', 'Monthly'];
 
 /*.........Date Pickers........*/
@@ -34,8 +28,6 @@ incomepiedata();
   String formattedDate = DateFormat('MMM-dd').format(_date);
   String formattedDateyester = DateFormat('MMM-dd').format(_yesterday);
 
-  String formattedMonth = DateFormat('MMMM').format(month);
-  static DateTime month = DateTime.now();
   Future _datepicker(BuildContext context) async {
     DateTime initialDate = DateTime.now();
     final newDate = await showMonthPicker(
@@ -48,8 +40,9 @@ incomepiedata();
     setState(() {
       month = newDate;
       formattedMonth = DateFormat('MMMM').format(month);
-
-      // formattedMonth = month.toString();
+      monthfunction();
+      totalbymonth(month: eachmonth);
+      incomepiedatabyMonth(monthly: eachmonth);
     });
   }
 
@@ -76,6 +69,8 @@ incomepiedata();
       endDate = range!.end;
       TransactionDB.instance
           .refreshCustomTransactions(startdate: startDate, enddate: endDate);
+      totalcustom(range!.start, range!.end);
+      incomepiedatabycustom(range!.start, range!.end);
     });
   }
 
@@ -117,137 +112,108 @@ incomepiedata();
     }
   }
 
-  final _dateToday = DateTime.now();
-  final _dateYesterday = DateTime.now().subtract(Duration(days: 1));
-  late final _dateYear = DateFormat('yyyy').format(DateTime.now());
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    All = true;
+    reload();
+    reloadtotal();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  var _dateToday = DateTime.now();
+  var _dateYesterday = DateTime.now().subtract(Duration(days: 1));
   @override
   Widget build(BuildContext context) {
-    int? eachmonth;
-    if (formattedMonth == "January") {
-      eachmonth = 1;
-    }
-    if (formattedMonth == "February") {
-      eachmonth = 2;
-    }
-    if (formattedMonth == "March") {
-      eachmonth = 3;
-    }
-    if (formattedMonth == "April") {
-      eachmonth = 4;
-    }
-    if (formattedMonth == "May") {
-      eachmonth = 5;
-    }
-    if (formattedMonth == "June") {
-      eachmonth = 6;
-    }
-    if (formattedMonth == "July") {
-      eachmonth = 7;
-    }
-    if (formattedMonth == "August") {
-      eachmonth = 8;
-    }
-    if (formattedMonth == "September") {
-      eachmonth = 9;
-    }
-    if (formattedMonth == "October") {
-      eachmonth = 10;
-    }
-    if (formattedMonth == "November") {
-      eachmonth = 11;
-    }
-    if (formattedMonth == "December") {
-      eachmonth = 12;
-    }
+    Map<String, double> datamap = {
+      "Income": income.value,
+      "Expense": expense.value,
+    };
+    monthfunction();
 
     if (All == true) {
-   incomepiedata();
-    inc();
-    piemap();
       TransactionDB.instance.refreshAllTransactions();
     } else if (Today == true) {
-      incomepiedatabydate(dat:DateTime.now().day);
-      inc();
-    piemap();
       TransactionDB.instance.refreshTransactions(dat: parseDate(_dateToday));
     } else if (Yesterday == true) {
-       incomepiedatabydate(dat:_dateYesterday.day);
-      inc();
-    piemap();
       TransactionDB.instance
           .refreshTransactions(dat: parseDate(_dateYesterday));
     } else if (Monthly == true) {
-      incomepiedatabyMonth(monthly:eachmonth);
-      inc();
-    piemap();
       TransactionDB.instance.refreshMonthlyTransactions(monthly: eachmonth);
     }
-  
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         heading(head: "STATS.", trail: "Know you STATISTICS here"),
         Padding(
-          padding: const EdgeInsets.only(left: 20, right: 270),
-          child: DropdownButtonFormField(
-            hint: Text(_list[0]),
-            items: _list.map((e) {
-              return DropdownMenuItem(
-                onTap: () {
-                  if (e == _list[0]) {
-                    setState(() {
+          padding: const EdgeInsets.only(left: 20),
+          child: SizedBox(
+            width: 100,
+            child: DropdownButtonFormField(
+              hint: Text(_list[0]),
+              items: _list.map((e) {
+                return DropdownMenuItem(
+                  onTap: () {
+                    if (e == _list[0]) {
                       All = true;
+                      Today = false;
+                      Yesterday = false;
                       Monthly = false;
                       Custom = false;
-                    });
-                  } else if (e == _list[1]) {
-                    setState(() {
+                      reload();
+                      reloadtotal();
+                      setState(() {});
+                    } else if (e == _list[1]) {
                       Today = true;
                       All = false;
                       Yesterday = false;
                       Monthly = false;
                       Custom = false;
-                    });
-                  }
-                  if (e == _list[2]) {
-                    setState(() {
+                      reload();
+                      reloadtotal();
+                      setState(() {});
+                    }
+                    if (e == _list[2]) {
                       Yesterday = true;
                       All = false;
                       Today = false;
                       Monthly = false;
                       Custom = false;
-                    });
-                  }
-                  if (e == _list[4]) {
-                    setState(() {
+                      reload();
+                      reloadtotal();
+                      setState(() {});
+                    }
+                    if (e == _list[4]) {
                       Monthly = true;
                       Custom = false;
                       All = false;
                       Today = false;
                       Yesterday = false;
-                    });
-                  } else if (e == _list[3]) {
-                    setState(() {
+                      monthfunction();
+                      totalbymonth(month: eachmonth);
+                      incomepiedatabyMonth(monthly: eachmonth);
+                      setState(() {});
+                    } else if (e == _list[3]) {
                       Custom = true;
                       Monthly = false;
                       All = false;
                       Today = false;
                       Yesterday = false;
-                    });
-                  }
-                },
-                value: e,
-                child: Text(e),
-              );
-            }).toList(),
-            onChanged: (value) {
-              
-            },
+                      setState(() {});
+                    }
+                  },
+                  value: e,
+                  child: Text(e),
+                );
+              }).toList(),
+              onChanged: (value) {},
+            ),
           ),
         ),
         Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Monthly == false && Custom == false
+            padding: const EdgeInsets.only(top: 10),
+            child: Custom == false && Monthly == false
                 ? SizedBox(
                     width: MediaQuery.of(context).size.width / 1,
                   )
@@ -307,7 +273,36 @@ incomepiedata();
                           ),
                         ],
                       )),
-        const Expanded(child: TabBarStats()),
+        SizedBox(height: 10),
+        TabBar(
+            labelColor: Colors.blueGrey[900],
+            unselectedLabelColor: Colors.grey,
+            controller: _tabController,
+            tabs: const [
+              Tab(text: "OVERALL"),
+              Tab(text: "INCOME"),
+              Tab(
+                text: "EXPENSE",
+              )
+            ]),
+        Expanded(
+          child: TabBarView(controller: _tabController, children: [
+            Center(
+              child: PieChart(
+                emptyColor: Colors.blue.shade300,
+                dataMap: datamap,
+                chartRadius: MediaQuery.of(context).size.width / 2.0,
+                legendOptions: const LegendOptions(
+                  legendPosition: LegendPosition.right,
+                ),
+                chartValuesOptions: const ChartValuesOptions(
+                    showChartValuesInPercentage: false),
+              ),
+            ),
+            IncomeTransactions(),
+            ExpenseTransactions(),
+          ]),
+        )
       ],
     );
   }
