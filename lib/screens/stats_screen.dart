@@ -213,7 +213,7 @@ class _StatsScreenState extends State<StatsScreen>
         ),
         Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: Custom == false && Monthly == false
+            child: Custom == false && Monthly == false 
                 ? SizedBox(
                     width: MediaQuery.of(context).size.width / 1,
                   )

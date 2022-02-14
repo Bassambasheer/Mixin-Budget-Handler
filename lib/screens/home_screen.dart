@@ -21,6 +21,18 @@ class HomeScreen extends StatelessWidget {
           style: TextStyle(fontSize: 25, fontFamily: "Cinzel"),
           textAlign: TextAlign.center,
         ),
+        ValueListenableBuilder(
+          valueListenable: grandtotal,
+          builder: (BuildContext context, double value, Widget?_) {
+            return card(
+              context: context,
+              category: "Total Balance",
+              amount: (" \u20B9${grandtotal.value}"),
+               boxcolor: Colors.blue.shade700.withOpacity(0.5),
+              borderclr:  Colors.blue.withOpacity(0.5)
+            );
+          }
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

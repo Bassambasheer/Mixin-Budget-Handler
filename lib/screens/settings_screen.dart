@@ -252,7 +252,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       deletePopup(
                           context: context,
                           title: "About",
-                          message: "Devoloper : Bassam Basheer N",
+                          message: "Devoloper : Bassam Basheer N ",
                           btn1: "",
                           btn2: "Close",
                           onpressdel: () {},

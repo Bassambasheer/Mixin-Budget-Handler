@@ -25,8 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(
-            height: 200,
+           SizedBox(
+            height: MediaQuery.of(context).size.height/ 3.8,
           ),
           Center(
               child: Image.asset(
@@ -38,8 +38,8 @@ class _SplashScreenState extends State<SplashScreen> {
             style: TextStyle(
                 color: Colors.white, fontSize: 18, fontFamily: "Roboto"),
           ),
-          const SizedBox(
-            height: 270,
+           SizedBox(
+            height: MediaQuery.of(context).size.height/ 2.9,
           ),
           Container(
             alignment: Alignment.bottomCenter,

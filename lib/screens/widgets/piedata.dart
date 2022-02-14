@@ -16,6 +16,7 @@ String parseDate(DateTime date) {
 
 ValueNotifier<double> income = ValueNotifier(0);
 ValueNotifier<double> expense = ValueNotifier(0);
+ValueNotifier<double> grandtotal = ValueNotifier(0);
 
 /* total amount*/
 total() async {
@@ -46,6 +47,10 @@ total() async {
   expense.value = 0;
   expense.value = expenseamounts;
   expense.notifyListeners();
+
+  grandtotal.value = 0;
+  grandtotal.value = incomeamounts - expenseamounts;
+  grandtotal.notifyListeners();
 }
 
 /* total amount by date*/
@@ -238,8 +243,6 @@ incomepiedata() async {
     expensecatname.removeWhere((item) => item == "");
     expallMap.addAll({expensecatname[i]: expenseamt[i]});
   }
-  print(expallMap);
-  print(incallMap);
 }
 
 /* by date */
@@ -314,8 +317,6 @@ incomepiedatabydate({dat}) async {
     expensecatname.removeWhere((item) => item == "");
     expallMap.addAll({expensecatname[i]: expenseamt[i]});
   }
-  print(expallMap);
-  print(incallMap);
 }
 
 /* monthly */
@@ -325,9 +326,9 @@ incomepiedatabyMonth({monthly}) async {
   expensecategories.clear();
   List<int> incomecategorykey = _db.keys
       .cast<int>()
-      .where((Key) => _db.get(Key)!.date.month == monthly &&
-          _db.get(Key)!.type == CategoryType.income
-         )
+      .where((Key) =>
+          _db.get(Key)!.date.month == monthly &&
+          _db.get(Key)!.type == CategoryType.income)
       .toList();
   for (int i = 0; i < incomecategorykey.length; i++) {
     final TransactionModel? incomecatgry = _db.get(incomecategorykey[i]);

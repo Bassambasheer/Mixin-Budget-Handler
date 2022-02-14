@@ -18,8 +18,8 @@ Widget card({category, amount, boxcolor, borderclr,context}) {
         ),
       ],
     ),
-    margin: const EdgeInsets.all(15),
-    height: MediaQuery.of(context).size.height/ 8,
+    margin: const EdgeInsets.all(8),
+    height: MediaQuery.of(context).size.height/ 9,
      width: MediaQuery.of(context).size.width / 2.5,
     child: Padding(
       padding: const EdgeInsets.all(9.0),
