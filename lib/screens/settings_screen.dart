@@ -122,7 +122,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Card(
           elevation: 3,
           child: ListTile(
-              tileColor: Colors.blue[100],
+              tileColor: Colors.cyan[100],
               title: Center(
                 child: Text(
                   txt,
@@ -139,9 +139,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Container(
       decoration: const BoxDecoration(
           gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [Colors.lightBlue, Colors.blue, Colors.white])),
+               begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Color(0XFF18A5A8),Color(0XFFBFFFC8)])),
       child: Scaffold(
           backgroundColor: Colors.white.withOpacity(0),
           body: SingleChildScrollView(
@@ -210,12 +210,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: ListTile(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            tileColor: Colors.blue[100],
+                            tileColor: Colors.cyan[100],
                             title: Center(
                               child: RichText(
                                   text: TextSpan(
                                       text: sharedTime != null
-                                          ? "Remainder Time : "
+                                          ? "Remainder Time: "
                                           : "Select time ",
                                       style: const TextStyle(
                                         fontSize: 16,

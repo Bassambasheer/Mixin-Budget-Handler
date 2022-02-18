@@ -275,8 +275,8 @@ class _StatsScreenState extends State<StatsScreen>
                       )),
         SizedBox(height: 10),
         TabBar(
-            labelColor: Colors.blueGrey[900],
-            unselectedLabelColor: Colors.grey,
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.blueGrey.shade600,
             controller: _tabController,
             tabs: const [
               Tab(text: "OVERALL"),

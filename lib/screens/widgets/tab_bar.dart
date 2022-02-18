@@ -25,8 +25,8 @@ class _TabBarWidgetState extends State<TabBarWidget>
     return Column(
       children: [
         TabBar(
-            labelColor: Colors.blueGrey[900],
-            unselectedLabelColor: Colors.grey,
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.blueGrey.shade600,
             controller: _tabController,
             tabs: const [
               Tab(text: "INCOME"),

@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                     category: "Total Earned",
                     amount: ("\u20B9${income.value}"),
                     boxcolor: Colors.greenAccent.shade400.withOpacity(0.9),
-                    borderclr: Colors.greenAccent.shade700.withOpacity(0.5));
+                    borderclr: Colors.green.withOpacity(0.5));
                     
               },
             ),

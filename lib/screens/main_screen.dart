@@ -22,9 +22,9 @@ class MainScreen extends StatelessWidget {
     return Container(
         decoration: const BoxDecoration(
             gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [Colors.lightBlue, Colors.blue, Colors.white])),
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Color(0XFF18A5A8),Color(0XFFBFFFC8)])),
     child:
     Scaffold(
       backgroundColor: Colors.grey.withOpacity(0),

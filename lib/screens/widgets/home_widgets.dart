@@ -14,7 +14,7 @@ Widget card({category, amount, boxcolor, borderclr,context}) {
           color: borderclr,
           spreadRadius: 1,
           blurRadius: 2,
-          offset: const Offset(7, 5), // changes position of shadow
+          offset: const Offset(2, 4), // changes position of shadow
         ),
       ],
     ),
@@ -76,7 +76,7 @@ Widget settingsbutton({text, ontap}) {
       child: Card(
         elevation: 3,
         child: ListTile(
-          tileColor: Colors.blue[100],
+          tileColor: Colors.cyan[100],
           onTap: ontap,
           title: Text(
             text,

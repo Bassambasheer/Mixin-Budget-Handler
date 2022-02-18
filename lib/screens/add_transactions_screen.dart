@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_management/screens/widgets/add_category.dart';
 import 'package:money_management/utility/category_db.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/db_models/category_model.dart';
@@ -28,19 +29,21 @@ class _AddTransactionsState extends State<AddTransactions> {
     super.initState();
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
           gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [Colors.lightBlue, Colors.blue, Colors.white])),
+               begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Color(0XFF18A5A8),Color(0XFFBFFFC8)])),
       child: Scaffold(
         backgroundColor: Colors.white.withOpacity(0),
         body: SafeArea(
             child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(20.0),
           child: ListView(
             children: [
               heading(head: "Add Transactions.", trail: ""),
@@ -53,7 +56,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                     decoration: BoxDecoration(
                       color: Colors.grey.shade100,
                       border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: Row(
                       children: [
@@ -75,7 +78,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                     decoration: BoxDecoration(
                       color: Colors.grey.shade100,
                       border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: Row(
                       children: [
@@ -102,7 +105,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                     decoration: BoxDecoration(
                       color: Colors.grey.shade100,
                       border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextButton.icon(
                         onPressed: () async {
@@ -130,13 +133,31 @@ class _AddTransactionsState extends State<AddTransactions> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.end,
+              //   children: [
+              //     TextButton.icon(
+              //       onPressed: () {
+              //         showCategoryAddPopup(context);
+              //       },
+              //       icon: const Icon(
+              //         Icons.add,
+              //         color: Colors.black,
+              //       ),
+              //       label: const Text(
+              //         "Add a category",
+              //         style: TextStyle(color: Colors.black),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              const SizedBox(height: 10),
               Container(
                 height: 55,
                 decoration: BoxDecoration(
                   color: Colors.grey.shade100,
                   border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
@@ -162,37 +183,57 @@ class _AddTransactionsState extends State<AddTransactions> {
                         _categoryId = selectedValue;
                       });
                     },
-                    onTap: () {},
+                    onTap: () {
+                      setState(() {});
+                    },
                     underline: const SizedBox(),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
-              TextFormField(
-                textInputAction: TextInputAction.next,
-                controller: _amountTextEditingController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                    hintText: "Amount",
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)))),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                textInputAction: TextInputAction.done,
-                controller: _noteTextEditingController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  hintText: "Note",
-                  fillColor: Colors.grey.shade100,
-                  filled: true,
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return '*This Field is required';
+                        }
+                      },
+                      textInputAction: TextInputAction.next,
+                      controller: _amountTextEditingController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                          hintText: "Amount",
+                          fillColor: Colors.grey.shade100,
+                          filled: true,
+                          border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)))),
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return '*This Field is required';
+                        }
+                      },
+                      textInputAction: TextInputAction.done,
+                      controller: _noteTextEditingController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        hintText: "Note",
+                        fillColor: Colors.grey.shade100,
+                        filled: true,
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                      ),
+                      maxLines: 5,
+                    ),
+                  ],
                 ),
-                maxLines: 5,
               ),
               const SizedBox(height: 20),
               Center(
@@ -203,7 +244,9 @@ class _AddTransactionsState extends State<AddTransactions> {
                           horizontal: 70, vertical: 6),
                     ),
                     onPressed: () {
-                      addTransaction();
+                      if (_formKey.currentState!.validate()) {
+                        addTransaction();
+                      }
                     },
                     child: const Text("Add")),
               )
@@ -215,29 +258,22 @@ class _AddTransactionsState extends State<AddTransactions> {
   }
 
   Future<void> addTransaction() async {
-    final _amountText = _amountTextEditingController.text;
-    final _noteText = _noteTextEditingController.text;
+    final _amountText = _amountTextEditingController.text.trim();
+    final _noteText = _noteTextEditingController.text.trim();
     if (_selectedDate == null) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Select a Date")));
       return;
     }
-    // if (_categoryId == null) {
-    //   return;
-    // }
     if (_selectedCategoryModel == null) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Choose a category")));
       return;
     }
     if (_amountText.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Enter the amount")));
       return;
     }
     if (_noteText.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Enter your note")));
       return;
     }
     final _parsedamount = double.tryParse(_amountText);

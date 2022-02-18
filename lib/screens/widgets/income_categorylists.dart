@@ -20,7 +20,7 @@ class IncomeCategory extends StatelessWidget {
                    shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
-            color: Colors.blue[100],
+            color: Colors.cyan[100],
             elevation: 4,
                   child: ListTile(
                       onLongPress: () {
