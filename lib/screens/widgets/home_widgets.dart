@@ -149,7 +149,7 @@ monthfunction(){
 
 reload() {
   var _dateToday = DateTime.now();
-  var _dateYesterday = DateTime.now().subtract(Duration(days: 1));
+  var _dateYesterday = DateTime.now().subtract(const Duration(days: 1));
   if (All == true) {
     incomepiedata();
   } else if (Today == true) {
@@ -161,7 +161,7 @@ reload() {
 
 reloadtotal() async {
   var _dateToday = DateTime.now();
-  var _dateYesterday = DateTime.now().subtract(Duration(days: 1));
+  var _dateYesterday = DateTime.now().subtract(const Duration(days: 1));
   if (All == true) {
     await total();
   } else if (Today == true) {

@@ -95,7 +95,6 @@ class TransactionDB implements TransactionDbFunctions {
     await Future.forEach(
       _allTransactions,
       (TransactionModel category) {
-        print(category);
         for (int i = 0; i < rangeKey.length; i++) {
           if (category.type == CategoryType.income &&
               category.key == rangeKey[i]) {
@@ -109,8 +108,6 @@ class TransactionDB implements TransactionDbFunctions {
     );
     incomeTransactionListNotifier.notifyListeners();
     expenseTransactionListNotifier.notifyListeners();
-
-    print(rangeKey);
     // final _allTransactions = await getAllTransactions();
     // _allTransactions.sort((first, second) => second.date.compareTo(first.date));
     // incomeTransactionListNotifier.value.clear();

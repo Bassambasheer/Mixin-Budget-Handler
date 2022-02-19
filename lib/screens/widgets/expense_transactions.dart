@@ -29,7 +29,7 @@ class ExpenseTransactions extends StatelessWidget {
                 const ChartValuesOptions(showChartValuesInPercentage: false),
           ),
         ),
-        Divider(),
+        const Divider(),
         Expanded(
           child: ValueListenableBuilder(
               valueListenable:

@@ -19,7 +19,7 @@ class _IncomeTransactionsState extends State<IncomeTransactions> {
     reload();
     // Map<String, double> datamap = incallMap;
     if (incallMap.isEmpty) {
-      return SizedBox();
+      return const SizedBox();
     }
     return Column(
       children: [

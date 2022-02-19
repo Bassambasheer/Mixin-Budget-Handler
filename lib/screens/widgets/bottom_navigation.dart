@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money_management/screens/home_screen.dart';
 import 'package:money_management/screens/main_screen.dart';
 
 class BottomBar extends StatelessWidget {

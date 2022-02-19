@@ -47,7 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   var sharedTime;
   static TimeOfDay time = TimeOfDay.now();
 
-  static final now = new DateTime.now();
+  static final now =  DateTime.now();
   var dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
   var format = DateFormat.jm();
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:money_management/screens/main_screen.dart';
-import 'package:money_management/screens/widgets/home_widgets.dart';
 import 'package:money_management/screens/widgets/piedata.dart';
 
 class SplashScreen extends StatefulWidget {

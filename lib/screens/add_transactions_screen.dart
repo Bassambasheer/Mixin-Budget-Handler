@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money_management/screens/widgets/add_category.dart';
 import 'package:money_management/utility/category_db.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/db_models/category_model.dart';
@@ -262,12 +261,12 @@ class _AddTransactionsState extends State<AddTransactions> {
     final _noteText = _noteTextEditingController.text.trim();
     if (_selectedDate == null) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Select a Date")));
+          .showSnackBar(const SnackBar(content: Text("Select a Date")));
       return;
     }
     if (_selectedCategoryModel == null) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Choose a category")));
+          .showSnackBar(const SnackBar(content: Text("Choose a category")));
       return;
     }
     if (_amountText.isEmpty) {

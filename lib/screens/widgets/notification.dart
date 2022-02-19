@@ -16,7 +16,7 @@ class NotificationApi2 {
 
   static Future init({bool initScheduled = false}) async {
     const andriod = AndroidInitializationSettings("@mipmap/ic_launcher");
-    final settings = InitializationSettings(android: andriod);
+    final settings = const InitializationSettings(android: andriod);
     await _notifications.initialize(settings,
         onSelectNotification: (payload) async {
       onNotifications.add(payload);
@@ -49,7 +49,7 @@ class NotificationApi2 {
     final scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day,
         time.hour, time.minute, time.second);
     return scheduledDate.isBefore(now)
-        ? scheduledDate.add(Duration(days: 1))
+        ? scheduledDate.add(const Duration(days: 1))
         : scheduledDate;
   }
 

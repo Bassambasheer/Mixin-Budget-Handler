@@ -13,7 +13,7 @@ Future<void> deletePopup({context,onpressdel,onpresscancel,title,message,btn1,bt
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,                children: [
                 TextButton(onPressed: onpressdel, child:  Text(btn1,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.red
                 ),)),
                  TextButton(onPressed: onpresscancel, child: Text(btn2))

@@ -122,8 +122,8 @@ class _StatsScreenState extends State<StatsScreen>
     _tabController = TabController(length: 3, vsync: this);
   }
 
-  var _dateToday = DateTime.now();
-  var _dateYesterday = DateTime.now().subtract(Duration(days: 1));
+ final _dateToday = DateTime.now();
+ final _dateYesterday = DateTime.now().subtract(const Duration(days: 1));
   @override
   Widget build(BuildContext context) {
     Map<String, double> datamap = {
@@ -273,7 +273,7 @@ class _StatsScreenState extends State<StatsScreen>
                           ),
                         ],
                       )),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         TabBar(
             labelColor: Colors.black,
             unselectedLabelColor: Colors.blueGrey.shade600,
@@ -299,8 +299,8 @@ class _StatsScreenState extends State<StatsScreen>
                     showChartValuesInPercentage: false),
               ),
             ),
-            IncomeTransactions(),
-            ExpenseTransactions(),
+            const IncomeTransactions(),
+            const ExpenseTransactions(),
           ]),
         )
       ],
