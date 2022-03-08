@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:money_management/db_models/category_model.dart';
 import 'package:money_management/screens/splash_screen.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'db_models/transaction_model.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
         fontFamily: "Robert",
       ),

@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:money_management/controller/controller.dart';
 import 'package:money_management/db_models/category_model.dart';
 import 'package:money_management/db_models/transaction_model.dart';
 import 'package:money_management/screens/widgets/piedata.dart';
@@ -18,13 +19,8 @@ class TransactionDB implements TransactionDbFunctions {
   factory TransactionDB() {
     return instance;
   }
-  ValueNotifier<List<TransactionModel>> incomeTransactionListNotifier =
-      ValueNotifier([]);
-  ValueNotifier<List<TransactionModel>> expenseTransactionListNotifier =
-      ValueNotifier([]);
-  ValueNotifier<List<TransactionModel>> transactionListNotifier =
-      ValueNotifier([]);
 
+ 
   @override
   Future<void> addTransaction(TransactionModel obj) async {
     final _db = await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
@@ -36,43 +32,39 @@ class TransactionDB implements TransactionDbFunctions {
   Future<void> refreshTransactions({dat}) async {
     final _allTransactions = await getAllTransactions();
     _allTransactions.sort((first, second) => second.date.compareTo(first.date));
-    incomeTransactionListNotifier.value.clear();
-    expenseTransactionListNotifier.value.clear();
+    incomeTransactionListNotifier.clear();
+    expenseTransactionListNotifier.clear();
     await Future.forEach(
       _allTransactions,
       (TransactionModel category) {
         if (category.type == CategoryType.income &&
             parseDate(category.date) == dat) {
-          incomeTransactionListNotifier.value.add(category);
+          incomeTransactionListNotifier.add(category);
         } else if (category.type == CategoryType.expense &&
            parseDate(category.date) == dat) {
-          expenseTransactionListNotifier.value.add(category);
+          expenseTransactionListNotifier.add(category);
         }
       },
     );
-    incomeTransactionListNotifier.notifyListeners();
-    expenseTransactionListNotifier.notifyListeners();
   }
 
   Future<void> refreshMonthlyTransactions({monthly}) async {
     final _allTransactions = await getAllTransactions();
     _allTransactions.sort((first, second) => second.date.compareTo(first.date));
-    incomeTransactionListNotifier.value.clear();
-    expenseTransactionListNotifier.value.clear();
+    incomeTransactionListNotifier.clear();
+    expenseTransactionListNotifier.clear();
     await Future.forEach(
       _allTransactions,
       (TransactionModel category) {
         if (category.type == CategoryType.income &&
             category.date.month == monthly) {
-          incomeTransactionListNotifier.value.add(category);
+          incomeTransactionListNotifier.add(category);
         } else if (category.type == CategoryType.expense &&
             category.date.month == monthly) {
-          expenseTransactionListNotifier.value.add(category);
+          expenseTransactionListNotifier.add(category);
         }
       },
     );
-    incomeTransactionListNotifier.notifyListeners();
-    expenseTransactionListNotifier.notifyListeners();
   }
 
   Future<void> refreshCustomTransactions(
@@ -90,76 +82,46 @@ class TransactionDB implements TransactionDbFunctions {
     }
     final _allTransactions = await getAllTransactions();
     _allTransactions.sort((first, second) => second.date.compareTo(first.date));
-    incomeTransactionListNotifier.value.clear();
-    expenseTransactionListNotifier.value.clear();
+    incomeTransactionListNotifier.clear();
+    expenseTransactionListNotifier.clear();
     await Future.forEach(
       _allTransactions,
       (TransactionModel category) {
         for (int i = 0; i < rangeKey.length; i++) {
           if (category.type == CategoryType.income &&
               category.key == rangeKey[i]) {
-            incomeTransactionListNotifier.value.add(category);
+            incomeTransactionListNotifier.add(category);
           } else if (category.type == CategoryType.expense &&
               category.key == rangeKey[i]) {
-            expenseTransactionListNotifier.value.add(category);
+            expenseTransactionListNotifier.add(category);
           }
         }
       },
     );
-    incomeTransactionListNotifier.notifyListeners();
-    expenseTransactionListNotifier.notifyListeners();
-    // final _allTransactions = await getAllTransactions();
-    // _allTransactions.sort((first, second) => second.date.compareTo(first.date));
-    // incomeTransactionListNotifier.value.clear();
-    // expenseTransactionListNotifier.value.clear();
-    // var days;
-    // List rangekey = [];
-    // await Future.forEach(
-    //   _allTransactions,
-    //   (TransactionModel category) {
-    //     days = enddate!.difference(startdate!).inDays;
-    //     for (int i = 0; i <= days; i++) {
-    //       rangekey.add(i);
-    //     }
-
-    //     if (category.type == CategoryType.income &&
-    //         category.date.month == days) {
-    //       incomeTransactionListNotifier.value.add(category);
-    //     } else if (category.type == CategoryType.expense &&
-    //         category.date.month == days) {
-    //       expenseTransactionListNotifier.value.add(category);
-    //     }
-    //   },
-    // );
-    // incomeTransactionListNotifier.notifyListeners();
-    // expenseTransactionListNotifier.notifyListeners();
   }
 
   Future<void> refreshAllTransactions() async {
     final _allTransactions = await getAllTransactions();
     _allTransactions.sort((first, second) => second.date.compareTo(first.date));
-    incomeTransactionListNotifier.value.clear();
-    expenseTransactionListNotifier.value.clear();
+    incomeTransactionListNotifier.clear();
+    expenseTransactionListNotifier.clear();
     await Future.forEach(
       _allTransactions,
       (TransactionModel category) {
         if (category.type == CategoryType.income) {
-          incomeTransactionListNotifier.value.add(category);
+          incomeTransactionListNotifier.add(category);
         } else {
-          expenseTransactionListNotifier.value.add(category);
+          expenseTransactionListNotifier.add(category);
         }
       },
     );
-    incomeTransactionListNotifier.notifyListeners();
-    expenseTransactionListNotifier.notifyListeners();
   }
 
   Future<void> refresh() async {
     final _list = await getAllTransactions();
     _list.sort((first, second) => second.date.compareTo(first.date));
-    transactionListNotifier.value.clear();
-    transactionListNotifier.value.addAll(_list);
-    transactionListNotifier.notifyListeners();
+    transactionListNotifier.clear();
+    transactionListNotifier.addAll(_list);
   }
 
   @override

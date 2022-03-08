@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:money_management/controller/controller.dart';
 import 'package:money_management/utility/category_db.dart';
-import 'package:money_management/db_models/category_model.dart';
 import 'package:money_management/screens/widgets/delete_popup.dart';
 
 class IncomeCategory extends StatelessWidget {
@@ -8,12 +9,11 @@ class IncomeCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: CategoryDB().incomeCategoryListNotifier,
-      builder: (BuildContext ctx, List<CategoryModel> newList, Widget? _) {
+    return Obx(
+      () {
         return ListView.separated(
             itemBuilder: (ctx, index) {
-              final category = newList[index];
+              final category = incomeCategoryListNotifier[index];
               return Padding(
                 padding: const EdgeInsets.only(left: 8,right: 8),
                 child: Card(
@@ -45,7 +45,7 @@ class IncomeCategory extends StatelessWidget {
             separatorBuilder: (ctx, index) {
               return const SizedBox(height: 1);
             },
-            itemCount: newList.length);
+            itemCount: incomeCategoryListNotifier.length);
       },
     );
   }

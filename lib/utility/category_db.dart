@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:money_management/controller/controller.dart';
 import 'package:money_management/db_models/category_model.dart';
 
 const CATEGORY_DB_NAME = 'cataegory_database';
@@ -17,10 +17,7 @@ class CategoryDB implements CategoryDbFunctions {
     return instance;
   }
 
-  ValueNotifier<List<CategoryModel>> incomeCategoryListNotifier =
-      ValueNotifier([]);
-  ValueNotifier<List<CategoryModel>> expenseCategoryListNotifier =
-      ValueNotifier([]);
+
   @override
   Future<void> insertCategory(CategoryModel value) async {
     final _categoryDB = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
@@ -36,20 +33,18 @@ class CategoryDB implements CategoryDbFunctions {
 
   Future<void> refreshUI() async {
     final _allCategories = await getCategories();
-    incomeCategoryListNotifier.value.clear();
-    expenseCategoryListNotifier.value.clear();
+    incomeCategoryListNotifier.clear();
+    expenseCategoryListNotifier.clear();
     await Future.forEach(
       _allCategories,
       (CategoryModel category) {
         if (category.type == CategoryType.income) {
-          incomeCategoryListNotifier.value.add(category);
+          incomeCategoryListNotifier.add(category);
         } else {
-          expenseCategoryListNotifier.value.add(category);
+          expenseCategoryListNotifier.add(category);
         }
       },
     );
-    incomeCategoryListNotifier.notifyListeners();
-    expenseCategoryListNotifier.notifyListeners();
   }
 
   @override

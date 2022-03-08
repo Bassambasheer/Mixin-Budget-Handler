@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:money_management/controller/controller.dart';
 import 'package:money_management/screens/widgets/home_widgets.dart';
-import 'package:money_management/utility/transaction_db.dart';
-import 'package:money_management/db_models/transaction_model.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:money_management/screens/widgets/piedata.dart';
 
-class IncomeTransactions extends StatefulWidget {
+class IncomeTransactions extends StatelessWidget {
   const IncomeTransactions({Key? key}) : super(key: key);
-
-  @override
-  State<IncomeTransactions> createState() => _IncomeTransactionsState();
-}
-
-class _IncomeTransactionsState extends State<IncomeTransactions> {
   @override
   Widget build(BuildContext context) {
     reload();
-    // Map<String, double> datamap = incallMap;
     if (incallMap.isEmpty) {
       return const SizedBox();
     }
@@ -36,15 +29,12 @@ class _IncomeTransactionsState extends State<IncomeTransactions> {
         ),
         const Divider(),
         Expanded(
-          child: ValueListenableBuilder(
-              valueListenable:
-                  TransactionDB.instance.incomeTransactionListNotifier,
-              builder: (BuildContext ctx, List<TransactionModel> newlist,
-                  Widget? _) {
+          child: Obx(()
+               {
                 return ListView.separated(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     itemBuilder: (ctx, index) {
-                      final _value = newlist[index];
+                      final _value = incomeTransactionListNotifier[index];
                       return Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
@@ -71,7 +61,7 @@ class _IncomeTransactionsState extends State<IncomeTransactions> {
                     separatorBuilder: (ctx, index) {
                       return const SizedBox(height: 2);
                     },
-                    itemCount: newlist.length);
+                    itemCount: incomeTransactionListNotifier.length);
               }),
         ),
       ],

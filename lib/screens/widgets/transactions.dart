@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:money_management/controller/controller.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/db_models/category_model.dart';
-import 'package:money_management/db_models/transaction_model.dart';
 import 'package:money_management/screens/widgets/delete_popup.dart';
 import 'package:money_management/screens/widgets/piedata.dart';
 
@@ -11,13 +12,12 @@ class Transactions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: TransactionDB.instance.transactionListNotifier,
-      builder: (BuildContext ctx, List<TransactionModel> newlist, Widget? _) {
+    return Obx(
+     () {
         return ListView.separated(
             padding: const EdgeInsets.only(left: 10, right: 10),
             itemBuilder: (ctx, index) {
-              final _value = newlist[index];
+              final _value = transactionListNotifier[index];
               return Dismissible(
                 direction: DismissDirection.endToStart,
                 key: Key("${_value.key}"),
@@ -80,7 +80,7 @@ class Transactions extends StatelessWidget {
             separatorBuilder: (ctx, index) {
               return const SizedBox(height: 2);
             },
-            itemCount: newlist.length);
+            itemCount: transactionListNotifier.length);
       },
     );
   }

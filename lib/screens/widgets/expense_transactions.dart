@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:money_management/controller/controller.dart';
 import 'package:money_management/screens/widgets/home_widgets.dart';
-import 'package:money_management/utility/transaction_db.dart';
-import 'package:money_management/db_models/transaction_model.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:money_management/screens/widgets/piedata.dart';
 
@@ -31,15 +31,12 @@ class ExpenseTransactions extends StatelessWidget {
         ),
         const Divider(),
         Expanded(
-          child: ValueListenableBuilder(
-              valueListenable:
-                  TransactionDB.instance.expenseTransactionListNotifier,
-              builder: (BuildContext ctx1, List<TransactionModel> newlist,
-                  Widget? _) {
+          child: Obx(
+              () {
                 return ListView.separated(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     itemBuilder: (ctx, index) {
-                      final _value = newlist[index];
+                      final _value = expenseTransactionListNotifier[index];
                       return Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
@@ -66,7 +63,7 @@ class ExpenseTransactions extends StatelessWidget {
                     separatorBuilder: (ctx, index) {
                       return const SizedBox(height: 2);
                     },
-                    itemCount: newlist.length);
+                    itemCount: expenseTransactionListNotifier.length);
               }),
         ),
       ],

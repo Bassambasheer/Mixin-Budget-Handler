@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:money_management/screens/add_transactions_screen.dart';
 import 'package:money_management/screens/catergory_screen.dart';
 import 'package:money_management/screens/home_screen.dart';
@@ -24,31 +25,28 @@ class MainScreen extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [Color(0XFF18A5A8),Color(0XFFBFFFC8)])),
-    child:
-    Scaffold(
-      backgroundColor: Colors.grey.withOpacity(0),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (selectedIndexNOtifier.value == 2) {
-            showCategoryAddPopup(context);
-          } else {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (ctx) => const AddTransactions()));
-          }
-        },
-        child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: const BottomBar(),
-      body: SafeArea(
-        child: ValueListenableBuilder(
-          valueListenable: selectedIndexNOtifier,
-          builder: (BuildContext context, int updatedIndex, _) {
-            return _pages[updatedIndex];
-          },
-        ),
-      ),
-    )
-    );
+                colors: [Color(0XFF18A5A8), Color(0XFFBFFFC8)])),
+        child: Scaffold(
+          backgroundColor: Colors.grey.withOpacity(0),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              if (selectedIndexNOtifier.value == 2) {
+                showCategoryAddPopup(context);
+              } else {
+                Get.to(const AddTransactions());
+              }
+            },
+            child: const Icon(Icons.add),
+          ),
+          bottomNavigationBar: const BottomBar(),
+          body: SafeArea(
+            child: ValueListenableBuilder(
+              valueListenable: selectedIndexNOtifier,
+              builder: (BuildContext context, int updatedIndex, _) {
+                return _pages[updatedIndex];
+              },
+            ),
+          ),
+        ));
   }
 }

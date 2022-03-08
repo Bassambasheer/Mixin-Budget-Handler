@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:money_management/controller/controller.dart';
+import 'package:money_management/screens/widgets/add_category.dart';
 import 'package:money_management/utility/category_db.dart';
 import 'package:money_management/utility/transaction_db.dart';
 import 'package:money_management/db_models/category_model.dart';
@@ -35,9 +38,9 @@ class _AddTransactionsState extends State<AddTransactions> {
     return Container(
       decoration: const BoxDecoration(
           gradient: LinearGradient(
-               begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Color(0XFF18A5A8),Color(0XFFBFFFC8)])),
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Color(0XFF18A5A8), Color(0XFFBFFFC8)])),
       child: Scaffold(
         backgroundColor: Colors.white.withOpacity(0),
         body: SafeArea(
@@ -132,60 +135,65 @@ class _AddTransactionsState extends State<AddTransactions> {
                   ),
                 ],
               ),
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.end,
-              //   children: [
-              //     TextButton.icon(
-              //       onPressed: () {
-              //         showCategoryAddPopup(context);
-              //       },
-              //       icon: const Icon(
-              //         Icons.add,
-              //         color: Colors.black,
-              //       ),
-              //       label: const Text(
-              //         "Add a category",
-              //         style: TextStyle(color: Colors.black),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextButton.icon(
+                    onPressed: () {
+                      showCategoryAddPopup(context);
+                    },
+                    icon: const Icon(
+                      Icons.add,
+                      color: Colors.black,
+                    ),
+                    label: const Text(
+                      "Add a category",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: 10),
-              Container(
-                height: 55,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    hint: const Text("Select Category"),
-                    value: _categoryId,
-                    items: (_selectedCategorytype == CategoryType.income
-                            ? CategoryDB().incomeCategoryListNotifier
-                            : CategoryDB().expenseCategoryListNotifier)
-                        .value
-                        .map((e) {
-                      return DropdownMenuItem(
-                        value: e.id,
-                        child: Text(e.name),
-                        onTap: () {
-                          _selectedCategoryModel = e;
-                        },
-                      );
-                    }).toList(),
-                    onChanged: (selectedValue) {
-                      setState(() {
-                        _categoryId = selectedValue;
-                      });
-                    },
-                    onTap: () {
-                      setState(() {});
-                    },
-                    underline: const SizedBox(),
+              GestureDetector(
+                onTap: () {
+                  setState(() {});
+                },
+                child: Container(
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Obx(
+                      () {
+                        return DropdownButton<String>(
+                          isExpanded: true,
+                          hint: const Text("Select Category"),
+                          value: _categoryId,
+                          items: (_selectedCategorytype == CategoryType.income
+                                  ? incomeCategoryListNotifier
+                                  : expenseCategoryListNotifier)
+                              .map((e) {
+                            return DropdownMenuItem(
+                              value: e.id,
+                              child: Text(e.name),
+                              onTap: () {
+                                _selectedCategoryModel = e;
+                              },
+                            );
+                          }).toList(),
+                          onChanged: (selectedValue) {
+                            setState(() {
+                              _categoryId = selectedValue;
+                            });
+                          },
+                          underline: const SizedBox(),
+                        );
+                      }
+                    ),
                   ),
                 ),
               ),
@@ -259,14 +267,8 @@ class _AddTransactionsState extends State<AddTransactions> {
   Future<void> addTransaction() async {
     final _amountText = _amountTextEditingController.text.trim();
     final _noteText = _noteTextEditingController.text.trim();
-    if (_selectedDate == null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Select a Date")));
-      return;
-    }
     if (_selectedCategoryModel == null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Choose a category")));
+      Get.snackbar("Add a Category", "", snackPosition: SnackPosition.BOTTOM);
       return;
     }
     if (_amountText.isEmpty) {
@@ -289,7 +291,7 @@ class _AddTransactionsState extends State<AddTransactions> {
     await TransactionDB.instance.addTransaction(_model);
     await total();
     await incomepiedata();
-    Navigator.of(context).pop();
+    Get.back();
     TransactionDB.instance.refresh();
   }
 

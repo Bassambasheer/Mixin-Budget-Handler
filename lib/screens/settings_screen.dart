@@ -17,8 +17,8 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  static const IS_SWITCHED = 'buttonClicked';
-  static const IS_ALARMON = 'alarmon';
+  static const isswitched = 'buttonClicked';
+  static const isAlarmOn = 'alarmon';
   TimeOfDay? shardAlarm;
 
   bool isSwitched = false;
@@ -26,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> checkButtonSwitched() async {
     final sharedPreference = await SharedPreferences.getInstance();
-    final buttonOn = sharedPreference.getBool(IS_SWITCHED);
+    final buttonOn = sharedPreference.getBool(isswitched);
     if (buttonOn == false) {
       setState(() {
         isSwitched = false;
@@ -41,7 +41,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   sharedtimeGetting() async {
     final sharedPreference = await SharedPreferences.getInstance();
-    sharedTime = sharedPreference.getString(IS_ALARMON);
+    sharedTime = sharedPreference.getString(isAlarmOn);
   }
 
   var sharedTime;
@@ -95,13 +95,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   trueFunction() async {
     final shared = await SharedPreferences.getInstance();
-    shared.setBool(IS_SWITCHED, true);
+    shared.setBool(isswitched, true);
     setState(() {});
   }
 
   falseFunction() async {
     final shared = await SharedPreferences.getInstance();
-    shared.setBool(IS_SWITCHED, false);
+    shared.setBool(isswitched, false);
     setState(() {});
     NotificationApi2.cancelNotification();
   }
@@ -110,7 +110,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     var tym,
   ) async {
     final shared = await SharedPreferences.getInstance();
-    shared.setString(IS_ALARMON, tym);
+    shared.setString(isAlarmOn, tym);
     setState(() {});
   }
 
